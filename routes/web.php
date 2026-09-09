@@ -20,4 +20,4 @@ Route::prefix('admin')->group(function () {
     Route::get('/info', function () {
         return 'Informasi Admin';
     });
-});
+}); 
