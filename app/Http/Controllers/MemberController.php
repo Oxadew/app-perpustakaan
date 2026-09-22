@@ -8,18 +8,18 @@ use Illuminate\Http\Request;
 class MemberController extends Controller
 {
     private array $members = [
-        ['id' => 1, 'nama' => 'John Doe', 'nim' => '1234567890', 'email' => 'john.doe@example.com', 'nomor_telepon' => '1234567890', 'alamat' => 'Jl. Merdeka No. 1', 'status' => 'Mahasiswa'],
-        ['id' => 2, 'nama' => 'Jane Smith', 'nim' => '0987654321', 'email' => 'jane.smith@example.com', 'nomor_telepon' => '0987654321', 'alamat' => 'Jl. Sudirman No. 2', 'status' => 'Mahasiswa'],
-        ['id' => 3, 'nama' => 'Bob Johnson', 'nim' => '1122334455', 'email' => 'bob.johnson@example.com', 'nomor_telepon' => '1122334455', 'alamat' => 'Jl. Diponegoro No. 3', 'status' => 'Mahasiswa'],
+    ['id' => 1, 'nama' => 'Siti Aminah', 'nim' => '2310501001', 'email' => 'siti.aminah@pens.ac.id', 'nomor_telepon' => '081234567890', 'status' => 'aktif'],
+    ['id' => 2, 'nama' => 'Budi Santoso', 'nim' => '2310501002', 'email' => 'budi.santoso@pens.ac.id', 'nomor_telepon' => '081298765432', 'status' => 'aktif'],
+    ['id' => 3, 'nama' => 'Dewi Lestari', 'nim' => '2310501003', 'email' => 'dewi.lestari@pens.ac.id', 'nomor_telepon' => '081211122233', 'status' => 'nonaktif'],
     ];
 
 
     public function index()
-    {
-        $members = $this->members;
+{
+    $members = $this->members;
 
-        return view('members.index', compact('members'));
-    }
+    return view('members.index', compact('members'));
+}
 
     public function create()
     {
@@ -74,4 +74,5 @@ class MemberController extends Controller
         return redirect()->route('members.index')
             ->with('success', "Member dengan id {$id} berhasil dihapus (data dummy, belum tersimpan ke database).");
     }
+    
 }
