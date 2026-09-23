@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -13,12 +14,12 @@ class CategoryController extends Controller
         ['id' => 3, 'nama_kategori' => 'Sejarah', 'deskripsi' => 'Buku bertema sejarah dan biografi tokoh.'],
     ];
 
-    public function index()
+   public function index()
     {
-        $categories = $this->categories;
-
-        return view('categories.index', compact('categories'));
+    $categories = Category::paginate(10);
+    return view('categories.index', compact('categories'));
     }
+
 
     public function create()
     {
@@ -27,24 +28,42 @@ class CategoryController extends Controller
 
     public function store(StoreCategoryRequest $request)
     {
-        $validated = $request->validated();
+    $validated = $request->validated();
 
-        return redirect()->route('categories.index')
-            ->with('success', "Kategori \"{$validated['nama_kategori']}\" berhasil ditambahkan (data dummy, belum tersimpan ke database).");
+    Category::create($validated);
+
+    return redirect()->route('categories.index')
+        ->with('success', "Kategori \"{$validated['nama_kategori']}\" berhasil ditambahkan.");
     }
 
-    public function edit(string $id)
+public function edit(string $id)
     {
-        return "CategoryController@edit, id: {$id}";
+    $category = Category::findOrFail($id);
+
+    return view('categories.edit', compact('category'));
     }
 
-    public function update(Request $request, string $id)
+public function update(Request $request, string $id)
     {
-        return "CategoryController@update, id: {$id}";
+    $category = Category::findOrFail($id);
+
+    $validated = $request->validate([
+        'nama_kategori' => 'required|string|max:100',
+        'deskripsi' => 'nullable|string',
+    ]);
+
+    $category->update($validated);
+
+    return redirect()->route('categories.index')
+        ->with('success', "Kategori \"{$validated['nama_kategori']}\" berhasil diperbarui.");
     }
 
-    public function destroy(string $id)
+public function destroy(string $id)
     {
-        return "CategoryController@destroy, id: {$id}";
+    $category = Category::findOrFail($id);
+    $category->delete();
+
+    return redirect()->route('categories.index')
+        ->with('success', 'Kategori berhasil dihapus.');
     }
 }
