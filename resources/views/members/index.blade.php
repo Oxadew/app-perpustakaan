@@ -41,7 +41,7 @@
 <h1>Daftar Member</h1>
 
 <p>
-    <a href="{{ route('members.create') }}">+ Tambah Member Baru</a>
+     <p><a href="{{ route('members.create') }}" class="btn">+ Tambah Anggota</a></p>
 </p>
 
 <!-- Form Pencarian Nama Anggota -->
@@ -63,22 +63,36 @@
 <table border="1" cellpadding="8" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th>No</th>
-            <th>NIM</th>
-            <th>Nama</th>
-            <th>Email</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse ($members as $index => $member)
-            <tr>
-                <td>{{ $members->firstItem() + $index }}</td>
-                <td>{{ $member->nim }}</td>
-                <td>{{ $member->nama }}</td>
-                <td>{{ $member->email }}</td>
-                <td>{{ ucfirst($member->status) }}</td>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>NIM</th>
+                <th>Email</th>
+                <th>No. Telepon</th>
+                <th>Status</th>
+                <th>Aksi</th>
             </tr>
+        </thead>
+        <tbody>
+            @forelse ($members as $member)
+                <tr>
+                    <td>{{ $member['id'] }}</td>
+                    <td>{{ $member['nama'] }}</td>
+                    <td>{{ $member['nim'] }}</td>
+                    <td>{{ $member['email'] }}</td>
+                    <td>{{ $member['nomor_telepon'] }}</td>
+                    <td>{{ ucfirst($member['status']) }}</td>
+                    <td>
+                        <a href="{{ route('members.show', $member['id']) }}">Detail</a>
+                        |
+                        <a href="{{ route('members.edit', $member['id']) }}">Edit</a>
+                        |
+                        <form class="inline" action="{{ route('members.destroy', $member['id']) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
         @empty
             <tr>
                 <td colspan="5" style="text-align: center;">Tidak ada data ditemukan.</td>
