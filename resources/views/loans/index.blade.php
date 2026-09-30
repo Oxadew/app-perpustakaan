@@ -33,7 +33,9 @@
                     </td>
                     <td>{{ $loan['tanggal_pinjam'] }}</td>
                     <td>{{ $loan['tanggal_kembali'] }}</td>
-                    <td>{{ ucfirst($loan['status']) }}</td>
+                    <td><span class="badge {{ $loan['status'] === 'dikembalikan' ? 'badge-success' : ($loan['status'] === 'dipinjam' ? 'badge-warning' : 'badge-danger') }}">
+    {{ ucfirst($loan['status']) }}
+</span></td>
                     <td>
                         <a href="{{ route('loans.show', $loan['id']) }}">Detail</a>
                         |

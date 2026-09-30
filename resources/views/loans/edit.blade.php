@@ -40,7 +40,6 @@
         <label for="status">Status</label>
         <select name="status" id="status">
             <option value="dipinjam" @selected(old('status', $loan['status']) == 'dipinjam')>Dipinjam</option>
-            <option value="dikembalikan" @selected(old('status', $loan['status']) == 'dikembalikan')>Dikembalikan</option>
             <option value="terlambat" @selected(old('status', $loan['status']) == 'terlambat')>Terlambat</option>
         </select>
         @error('status')
@@ -49,5 +48,16 @@
 
         <button type="submit" class="btn">Perbarui</button>
     </form>
+    <div class="actions">
+        @if ($loan['status'] === 'dipinjam')
+            <form action="{{ route('loans.kembalikan', $loan['id']) }}" method="POST" style="display: inline;">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn btn-success" onclick="return confirm('Apakah Anda yakin ingin mengembalikan buku sekarang?')">
+                    Kembalikan Buku
+                </button>
+            </form>
+        @endif
+    </div>
 </body>
 </html>

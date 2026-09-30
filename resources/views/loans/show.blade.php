@@ -37,7 +37,9 @@
         </tr>
         <tr>
             <th>Status</th>
-            <td>{{ ucfirst($loan['status']) }}</td>
+            <td><span class="badge {{ $loan['status'] === 'dikembalikan' ? 'badge-success' : ($loan['status'] === 'dipinjam' ? 'badge-warning' : 'badge-danger') }}">
+    {{ ucfirst($loan['status']) }}
+</span></td>
         </tr>
     </table>
 
