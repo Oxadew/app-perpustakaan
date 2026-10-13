@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoanController;
@@ -20,6 +21,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::resource('categories', CategoryController::class)->except(['show']);
     });
+    Route::get('/profil', [ProfileController::class, 'show'])->name('profil.show');
+    Route::put('/profil/password', [ProfileController::class, 'updatePassword'])->name('profil.password.update');
 
     Route::resource('books', BookController::class);
     Route::resource('members', MemberController::class);
