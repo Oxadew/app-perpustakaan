@@ -11,14 +11,14 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Judul</th>
-                <th>Penulis</th>
-                <th>Penerbit</th>
-                <th>Tahun</th>
-                <th>Stok</th>
-                <th>Kategori</th>
-                <th>Aksi</th>
+                <th style="background: #f3f4f6;">ID</th>
+                <th style="background: #f3f4f6;">Judul</th>
+                <th style="background: #f3f4f6;">Penulis</th>
+                <th style="background: #f3f4f6;">Penerbit</th>
+                <th style="background: #f3f4f6;">Tahun</th>
+                <th style="background: #f3f4f6;">Stok</th>
+                <th style="background: #f3f4f6;">Kategori</th>
+                <th style="background: #f3f4f6;">Aksi</th>
             </tr>
         </thead>
         <tbody>

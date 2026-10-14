@@ -10,14 +10,14 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Anggota</th>
-                <th>Petugas</th>
-                <th>Buku</th>
-                <th>Tgl Pinjam</th>
-                <th>Tgl Kembali</th>
-                <th>Status</th>
-                <th>Aksi</th>
+                <th style="background: #f3f4f6;">ID</th>
+                <th style="background: #f3f4f6;">Anggota</th>
+                <th style="background: #f3f4f6;">Petugas</th>
+                <th style="background: #f3f4f6;">Buku</th>
+                <th style="background: #f3f4f6;">Tgl Pinjam</th>
+                <th style="background: #f3f4f6;">Tgl Kembali</th>
+                <th style="background: #f3f4f6;">Status</th>
+                <th style="background: #f3f4f6;">Aksi</th>
             </tr>
         </thead>
         <tbody>

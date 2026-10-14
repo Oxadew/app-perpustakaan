@@ -1,20 +1,9 @@
-{{-- File: resources/views/loans/create.blade.php --}}
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Tambah Peminjaman</title>
-    <style>
-        body { font-family: sans-serif; margin: 40px; max-width: 500px; }
-        label { display: block; margin-top: 12px; font-weight: bold; }
-        input, select { width: 100%; padding: 6px; margin-top: 4px; box-sizing: border-box; }
-        .checkbox-list { border: 1px solid #ccc; border-radius: 4px; padding: 10px; margin-top: 4px; max-height: 200px; overflow-y: auto; }
-        .checkbox-list label { display: block; font-weight: normal; margin-top: 0; }
-        .error { color: #b91c1c; font-size: 14px; margin-top: 4px; }
-        .btn { margin-top: 20px; padding: 8px 16px; background: #2563eb; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-    </style>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Tambah Peminjaman')
+
+@section('content')
+<div class="form-wrapper">
     <h1>Tambah Peminjaman</h1>
     <p><a href="{{ route('loans.index') }}">&larr; Kembali ke daftar peminjaman</a></p>
 
@@ -34,7 +23,9 @@
             <div class="error">{{ $message }}</div>
         @enderror
 
-        <p><em>Petugas pencatat: {{ auth()->user()->name }} (otomatis dari akun yang login).</em></p>
+        <p style="margin-top: 12px; font-style: italic;">
+            Petugas pencatat: {{ auth()->user()->name }} (otomatis dari akun yang login).
+        </p>
 
         <label for="tanggal_pinjam">Tanggal Pinjam</label>
         <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" value="{{ old('tanggal_pinjam') }}">
@@ -49,22 +40,24 @@
         @enderror
 
         <label>Buku yang Dipinjam</label>
-        <div class="checkbox-list">
+        <div class="checkbox-container">
             @forelse ($books as $book)
-                <label>
-                    <input type="checkbox" name="book_ids[]" value="{{ $book['id'] }}"
+                <div class="checkbox-row">
+                    <input type="checkbox" name="book_ids[]" value="{{ $book['id'] }}" id="book_{{ $book['id'] }}"
                         @checked(in_array($book['id'], old('book_ids', [])))>
-                    {{ $book['judul'] }} (stok: {{ $book['stok'] }})
-                </label>
+                    <label for="book_{{ $book['id'] }}">
+                        {{ $book['judul'] }} (stok: {{ $book['stok'] }})
+                    </label>
+                </div>
             @empty
-                <p>Belum ada data buku.</p>
+                <p style="margin: 0; color: #666;">Belum ada data buku.</p>
             @endforelse
         </div>
         @error('book_ids')
             <div class="error">{{ $message }}</div>
         @enderror
 
-        <button type="submit" class="btn">Simpan</button>
+        <button type="submit" class="btn btn-submit">Simpan</button>
     </form>
-</body>
-</html>
+</div>
+@endsection

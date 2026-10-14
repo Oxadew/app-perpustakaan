@@ -17,8 +17,10 @@ class MemberController extends Controller
     public function index(Request $request)
 {
     $members = Member::when($request->query('search'), function ($query, $search) {
-            $query->where('nama', 'like', "%{$search}%");
-        })->paginate(10);
+            $query->where('nama', 'ilike', "%{$search}%");
+        })
+        ->orderBy('id', 'asc')
+        ->paginate(10);
     return view('members.index', compact('members'));
 }
 

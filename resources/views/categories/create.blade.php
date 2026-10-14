@@ -3,48 +3,6 @@
 @section('title', 'Tambah Kategori')
 
 @section('content')
-    <style>
-        .form-container {
-            max-width: 450px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-        .form-group label {
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .form-group input, 
-        .form-group textarea {
-            padding: 8px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            width: 100%;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-        .error {
-            color: #dc3545;
-            font-size: 12px;
-            margin-top: 4px;
-        }
-        .btn {
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .btn:hover {
-            background-color: #1557b0;
-        }
-    </style>
-
     <h1>Tambah Kategori</h1>
     <p><a href="{{ route('categories.index') }}">&larr; Kembali ke daftar kategori</a></p>
 

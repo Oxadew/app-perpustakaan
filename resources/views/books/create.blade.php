@@ -3,33 +3,6 @@
 @section('title', 'Tambah Buku')
 
 @section('content')
-    <style>
-        .form-container {
-            max-width: 450px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-        .form-group label {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        .form-group input, 
-        .form-group select {
-            padding: 8px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .error {
-            color: #dc3545;
-            font-size: 12px;
-            margin-top: 4px;
-        }
-    </style>
-
     <h1>Tambah Buku</h1>
     <p><a href="{{ route('books.index') }}">&larr; Kembali ke daftar buku</a></p>
 

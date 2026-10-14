@@ -6,12 +6,19 @@ use Illuminate\Http\Request;
 use App\Models\Loan;
 use App\Models\Book; 
 use App\Models\Member; 
+use Illuminate\Support\Facades\DB;
 
 class LoanController extends Controller
 {
     public function index()
     {
-        $loans = Loan::with(['member', 'user', 'loanItems.book'])->paginate(10);
+        Loan::where('status', 'dipinjam')
+        ->whereDate('tanggal_kembali', '<', now())
+        ->update(['status' => 'terlambat']);    
+
+        $loans = Loan::with(['member', 'user', 'loanItems.book'])
+        ->orderBy('id', 'asc')
+        ->paginate(10);
 
         return view('loans.index', compact('loans'));
     }
@@ -19,7 +26,7 @@ class LoanController extends Controller
     public function create()
     {
         $members = Member::all();
-        $books = Book::all();
+        $books = Book::where('stok', '>', 0)->get();
 
         return view('loans.create', compact('members', 'books'));
     }
@@ -34,19 +41,30 @@ class LoanController extends Controller
             'book_ids.*' => 'integer|exists:books,id',
         ]);
 
-        $loan = Loan::create([
-            'member_id' => $validated['member_id'],
-            'user_id' => auth()->id(),
-            'tanggal_pinjam' => $validated['tanggal_pinjam'],
-            'tanggal_kembali' => $validated['tanggal_kembali'],
-        ]);
+    DB::transaction(function () use ($validated) {
+            $loan = Loan::create([
+                'member_id' => $validated['member_id'],
+                'user_id' => auth()->id(),
+                'tanggal_pinjam' => $validated['tanggal_pinjam'],
+                'tanggal_kembali' => $validated['tanggal_kembali'],
+                'status' => 'dipinjam', 
+            ]);
 
         foreach ($validated['book_ids'] as $bookId) {
-            $loan->loanItems()->create(['book_id' => $bookId]);
-        }
+                // Simpan loan item
+                $loan->loanItems()->create(['book_id' => $bookId]);
+
+                // Kurangi stok buku sebanyak 1
+                $book = Book::findOrFail($bookId);
+                $book->decrement('stok'); 
+                // Atau bisa juga: 
+                // $book->stok -= 1;
+                // $book->save();
+            }
+        });
 
         return redirect()->route('loans.index')
-            ->with('success', 'Transaksi peminjaman berhasil dibuat.');
+            ->with('success', 'Transaksi peminjaman berhasil dibuat dan stok buku telah dikurangi.');
     }
 
     public function show(string $id)
@@ -83,9 +101,23 @@ class LoanController extends Controller
 
     public function destroy(string $id)
     {
-        $loan = Loan::findOrFail($id);
-        $loan->loanItems()->delete();
-        $loan->delete();
+        // Jika transaksi dihapus, idealnya stok dikembalikan jika statusnya masih dipinjam
+        DB::transaction(function () use ($id) {
+            $loan = Loan::with('loanItems')->findOrFail($id);
+
+            // Jika dihapus saat status masih dipinjam, kembalikan stok bukunya
+            if ($loan->status === 'dipinjam') {
+                foreach ($loan->loanItems as $item) {
+                    $book = Book::find($item->book_id);
+                    if ($book) {
+                        $book->increment('stok');
+                    }
+                }
+            }
+
+            $loan->loanItems()->delete();
+            $loan->delete();
+        });
 
         return redirect()->route('loans.index')
             ->with('success', 'Transaksi peminjaman berhasil dihapus.');
@@ -93,12 +125,23 @@ class LoanController extends Controller
 
     public function kembalikan(string $id)
     {
-        $loan = Loan::findOrFail($id);
+        DB::transaction(function () use ($id) {
+            $loan = Loan::with('loanItems')->findOrFail($id);
 
-        $loan->update([
-            'status' => 'dikembalikan',
-            'tanggal_dikembalikan' => now()->toDateString(),
-        ]);
+            // Ubah status loan menjadi dikembalikan
+            $loan->update([
+                'status' => 'dikembalikan',
+                'tanggal_dikembalikan' => now()->toDateString(),
+            ]);
+
+            // Kembalikan stok setiap buku yang dipinjam
+            foreach ($loan->loanItems as $item) {
+                $book = Book::find($item->book_id);
+                if ($book) {
+                    $book->increment('stok'); // Bertambah 1
+                }
+            }
+        });
 
         return redirect('/loans')->with('success', 'Buku berhasil dikembalikan.');
     }

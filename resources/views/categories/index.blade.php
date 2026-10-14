@@ -11,10 +11,10 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nama Kategori</th>
-                <th>Deskripsi</th>
-                <th>Aksi</th>
+                <th style="background: #f3f4f6;">ID</th>
+                <th style="background: #f3f4f6;">Nama Kategori</th>
+                <th style="background: #f3f4f6;">Deskripsi</th>
+                <th style="background: #f3f4f6;">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +24,7 @@
                     <td>{{ $category['nama_kategori'] }}</td>
                     <td>{{ $category['deskripsi'] ?? '-' }}</td>
                     <td>
+
                         <a href="{{ route('categories.edit', $category['id']) }}">Edit</a>
                         |
                         <form class="inline" action="{{ route('categories.destroy', $category['id']) }}" method="POST">

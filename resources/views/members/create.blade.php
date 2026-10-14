@@ -3,49 +3,6 @@
 @section('title', 'Tambah Member')
 
 @section('content')
-<style>
-    .form-container {
-        max-width: 450px;
-    }
-    .form-group {
-        margin-bottom: 15px;
-        display: flex;
-        flex-direction: column;
-    }
-    .form-group label {
-        font-weight: 600;
-        margin-bottom: 6px;
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-        padding: 8px 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .error {
-        color: #dc3545;
-        font-size: 12px;
-        margin-top: 4px;
-    }
-    .btn {
-        margin-top: 10px;
-        padding: 8px 18px;
-        background: #2563eb;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-    .btn:hover {
-        background: #1d4ed8;
-    }
-</style>
-
 <h1>Tambah Member</h1>
 <p><a href="{{ route('members.index') }}">&larr; Kembali ke daftar member</a></p>
 
